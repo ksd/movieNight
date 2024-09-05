@@ -30,8 +30,8 @@ class MovieViewModel {
         movies.move(fromOffsets: source, toOffset: destination)
     }
     
-    func delete(){
-        
+    func delete(at offsets: IndexSet){
+        movies.remove(atOffsets: offsets)
     }
 }
 

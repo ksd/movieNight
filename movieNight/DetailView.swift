@@ -17,6 +17,7 @@ struct DetailView: View {
                 Image(movie.poster)
                     .resizable()
                     .frame(width: 150, height: 237)
+                    .cornerRadius(8)
                     .shadow(color: .gray, radius: 10, x:5, y:5)
                 SideInfo(movie: movie)
             }

@@ -13,6 +13,8 @@ struct MoviesView: View {
     @Environment(MovieViewModel.self) private var viewModel: MovieViewModel
     let showOnlyFavories: Bool
     
+    @State private var deleteOffsets: IndexSet = []
+    @State private var isShowingDeleteConfirmation = false
 
     var displayedMovies: [Movie] {
         viewModel.movies.filter {(!showOnlyFavories || $0.isFavorite)}
@@ -31,8 +33,41 @@ struct MoviesView: View {
                         Row(movie: movie)
                     }
                 }
+                .onMove{(source, destination) in
+                    viewModel.move(source: source, destination: destination)
+                }
+                .onDelete{ offsets in
+                    deleteOffsets = offsets
+                    isShowingDeleteConfirmation = true
+                }
             }
             .navigationTitle(showOnlyFavories ? "Favorites" : "Movies")
+            .toolbar {
+                ToolbarItem(placement: .navigation) {
+                    EditButton()
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        // - ToDo: Add new movie
+                    } label: {
+                        Label(
+                            title: { Text("Label") },
+                            icon: { Image(systemName: "plus.rectangle") }
+                        )
+                    }
+
+                }
+            }
+            .confirmationDialog("Are you sure?", isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
+                Button("Delete movie", role: .destructive) {
+                    withAnimation {
+                        viewModel.delete(at: deleteOffsets)
+                    }
+                }
+                Button("Cancel", role: .cancel){}
+            } message: {
+                Text("The action is not reversible")
+            }
         }
     }
 }
