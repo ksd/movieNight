@@ -9,28 +9,24 @@ import SwiftUI
 
 struct MoviesView: View {
     
-    @Binding var movies: [Movie]
+    //@Binding var movies: [Movie]
+    @Environment(MovieViewModel.self) private var viewModel: MovieViewModel
     let showOnlyFavories: Bool
     
+
     var displayedMovies: [Movie] {
-         showOnlyFavories 
-        ? movies.filter {$0.isFavorite}
-        : movies
-    }
-    func index(for movie: Movie) -> Int {
-        movies.firstIndex{ $0.title == movie.title}!
+        viewModel.movies.filter {(!showOnlyFavories || $0.isFavorite)}
     }
     
     var body: some View {
-    
-        /*
-         - ToDo : Fix fejl der bevirker at isFavorite ikke opdateres i GUI når movie vælges fra favoritesListen
-         */
+        @Bindable var viewModel = viewModel
+
         NavigationStack {
             List{
                 ForEach(displayedMovies, id: \.title){ movie in
                     NavigationLink {
-                        DetailView(movie: $movies[index(for: movie)])
+                        //DetailView(movie: $movies[index(for: movie)])
+                        DetailView(movie: movie)
                     } label: {
                         Row(movie: movie)
                     }
@@ -43,9 +39,12 @@ struct MoviesView: View {
 
 
 
-#Preview {
-    MoviesView(movies: .constant(TestData.movies), showOnlyFavories: true)
+#Preview("Favorites") {
+    //MoviesView(movies: .constant(TestData.movies), showOnlyFavories: true)
+    MoviesView(showOnlyFavories: true).environment(MovieViewModel())
+    
 }
-#Preview {
-    MoviesView(movies: .constant(TestData.movies), showOnlyFavories: false)
+#Preview("Movies") {
+    //MoviesView(movies: .constant(TestData.movies), showOnlyFavories: false)
+    MoviesView(showOnlyFavories: false).environment(MovieViewModel())
 }

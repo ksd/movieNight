@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DetailView: View {
     
-    @Binding var movie: Movie
+    let movie: Movie
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -18,7 +18,7 @@ struct DetailView: View {
                     .resizable()
                     .frame(width: 150, height: 237)
                     .shadow(color: .gray, radius: 10, x:5, y:5)
-                SideInfo(movie: $movie)
+                SideInfo(movie: movie)
             }
             BottomInfo(movie: movie)
             Spacer()
@@ -30,5 +30,5 @@ struct DetailView: View {
 }
 
 #Preview {
-    DetailView(movie: .constant(TestData.movies[1]))
+    DetailView(movie: TestData.movies[1])
 }

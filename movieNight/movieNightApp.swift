@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct movieNightApp: App {
+    @State private var viewModel = MovieViewModel()
     var body: some Scene {
         WindowGroup {
-           ContentView()
+           //ContentView()
+            ContentView().environment(viewModel)
         }
     }
 }

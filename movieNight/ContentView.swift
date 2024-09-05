@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var movies = TestData.movies
+    
+    //@State var movies = TestData.movies
+    
     var body: some View {
         
         TabView {
             NavigationStack {
-                MoviesView(movies: $movies, showOnlyFavories: false)
+                //MoviesView(movies: $movies, showOnlyFavories: false)
+                MoviesView(showOnlyFavories: false)
             }
             .tabItem {
                 Image(systemName: "list.bullet")
@@ -22,7 +25,8 @@ struct ContentView: View {
             }
             
             NavigationStack {
-                MoviesView(movies: $movies, showOnlyFavories: true)
+                //MoviesView(movies: $movies, showOnlyFavories: true)
+                MoviesView(showOnlyFavories: true)
             }
             .tabItem {
                 Image(systemName: "heart")
@@ -34,5 +38,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView().environment(MovieViewModel())
 }
