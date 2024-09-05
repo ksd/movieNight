@@ -30,5 +30,5 @@ struct DetailView: View {
 }
 
 #Preview {
-    DetailView(movie: TestData.movies[1])
+    DetailView(movie: TestData.movies[1]).environment(MovieViewModel())
 }
