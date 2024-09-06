@@ -9,13 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     
-    //@State var movies = TestData.movies
-    
     var body: some View {
         
         TabView {
             NavigationStack {
-                //MoviesView(movies: $movies, showOnlyFavories: false)
                 MoviesView(showOnlyFavories: false)
             }
             .tabItem {
@@ -25,7 +22,6 @@ struct ContentView: View {
             }
             
             NavigationStack {
-                //MoviesView(movies: $movies, showOnlyFavories: true)
                 MoviesView(showOnlyFavories: true)
             }
             .tabItem {

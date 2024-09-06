@@ -9,12 +9,12 @@ import SwiftUI
 
 struct MoviesView: View {
     
-    //@Binding var movies: [Movie]
     @Environment(MovieViewModel.self) private var viewModel: MovieViewModel
     let showOnlyFavories: Bool
     
     @State private var deleteOffsets: IndexSet = []
     @State private var isShowingDeleteConfirmation = false
+    @State private var isShowingAddNewMovieSheet = false
 
     var displayedMovies: [Movie] {
         viewModel.movies.filter {(!showOnlyFavories || $0.isFavorite)}
@@ -27,7 +27,6 @@ struct MoviesView: View {
             List{
                 ForEach(displayedMovies, id: \.title){ movie in
                     NavigationLink {
-                        //DetailView(movie: $movies[index(for: movie)])
                         DetailView(movie: movie)
                     } label: {
                         Row(movie: movie)
@@ -48,7 +47,7 @@ struct MoviesView: View {
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button {
-                        // - ToDo: Add new movie
+                        isShowingAddNewMovieSheet = true
                     } label: {
                         Label(
                             title: { Text("Label") },
@@ -57,6 +56,10 @@ struct MoviesView: View {
                     }
 
                 }
+            }
+            .sheet(isPresented: $isShowingAddNewMovieSheet) {
+                AddNewView()
+                    .presentationDetents([.medium, .large])
             }
             .confirmationDialog("Are you sure?", isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
                 Button("Delete movie", role: .destructive) {
